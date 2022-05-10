@@ -18,4 +18,3 @@ Para la interfaz por línea de comandos de
 
 ---
 Otra manera es utilizando [gradlew](gradlew) y [gradlew.bat](gradlew.bat).
-para
