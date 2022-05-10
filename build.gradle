@@ -1,27 +1,16 @@
 plugins {
-    id 'org.jetbrains.kotlin.jvm' version '1.6.20'
-    id 'org.jetbrains.dokka' version '1.6.20'
+    id 'org.jetbrains.kotlin.jvm' version '1.6.21'
+    //id "com.github.johnrengelman.shadow" version "7.1.2"
     id 'java'
     id 'application'
 }
 
 group = 'me.emilianoapodaca'
 version = '1.0-SNAPSHOT'
+sourceCompatibility = 1.8
 
 repositories {
     mavenCentral()
-}
-
-dependencies {
-    implementation 'org.jetbrains.dokka:dokka-gradle-plugin:1.6.20'
-}
-
-task myJavadocs(type: Javadoc) {
-    source = sourceSets.main.allJava
-}
-
-test {
-    useJUnitPlatform()
 }
 
 compileKotlin {
@@ -29,9 +18,43 @@ compileKotlin {
 }
 
 application {
-    mainClassName = 'MainKt'
+    mainClass.set('MainKt')
 }
 
-dokkaHtml {
-    outputDirectory.set(file("${buildDir}/dokka"))
+
+kotlin {
+    sourceSets {
+        main.kotlin.srcDirs += 'src/main/kotlin'
+    }
+}
+
+java {
+    sourceSets {
+        main.java.srcDirs += 'src/main/java'
+    }
+}
+kotlin {
+    sourceSets {
+        main.kotlin.srcDirs += 'src/main/java'
+    }
+}
+
+jar {
+    manifest {
+        attributes(
+                'Main-Class': 'MainKt'
+        )
+    }
+    from sourceSets.main.output
+    dependsOn configurations.runtimeClasspath
+    from {
+        configurations.runtimeClasspath.findAll { it.name.endsWith('jar') }.collect { zipTree(it) }
+    }
+}
+
+
+run { standardInput = System.in }
+
+dependencies {
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.6.21'
 }

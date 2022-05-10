@@ -1,7 +1,4 @@
-package Estructuras;
-
 import java.util.NoSuchElementException;
-import java.util.Comparator;
 
 /**
  * <p>

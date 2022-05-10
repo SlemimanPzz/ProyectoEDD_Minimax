@@ -1,5 +1,3 @@
-package Estructuras;
-
 import java.util.NoSuchElementException;
 
 public abstract class PushPop<T> {

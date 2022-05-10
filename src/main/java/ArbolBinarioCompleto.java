@@ -1,7 +1,5 @@
-package Estructuras;
-
-import java.util.NoSuchElementException;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 /**
  * <p>
