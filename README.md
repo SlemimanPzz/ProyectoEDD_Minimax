@@ -44,4 +44,4 @@ el ejecutable de Linux/MacOS es `ProyectoEDD_Minimax` y en Windows es
 Otra manera sin instalar Gradle es utilizando [gradlew](gradlew) y [gradlew.bat](gradlew.bat)
 ya incluidos en el proyecto, únicamente sustituya `gradle` por `./gradlew` o `.\gradlew.bat` dependiendo el caso.
 
->Hasta el momento el proyecto no esta terminado ni al parecer funciona el `gr`
+>Hasta el momento el proyecto no esta terminado ni al parecer funciona en windows. En Linux y MacOS si.
