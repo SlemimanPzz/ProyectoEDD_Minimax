@@ -1,4 +1,4 @@
-class Tablero(private val fichas: Array<Ficha>) {
+class Tablero(private val fichas: Array<Ficha>, val jugador: Jugador) {
 
 
     private val nodosTablero: Array<Nodo> = Array(5) { i -> Nodo(i, null) }
@@ -45,11 +45,26 @@ class Tablero(private val fichas: Array<Ficha>) {
 
     }
 
-    private fun atrapado(n : Nodo): Boolean {
+    private fun atrapado(n : Nodo?): Boolean {
+        if(n == null) return  false
         n.vecindad.forEach { if(it.valor == null)  return  false}
         return true
     }
 
+    fun mueveJugador(){
+        println("A donde quieres mover")
+        var porMover = true
+        while(porMover){
+            val i = readln().toInt()
+            if(nodosTablero[i].valor != null){
+                println("Mocviste")
+                porMover = false
+            } else{
+                println("No se puede hacer ese moviemiento")
+            }
+
+        }
+    }
     override fun toString(): String {
         val str = """
             ${nodosTablero[0]}---${nodosTablero[1]}
