@@ -1,3 +1,5 @@
+package Estructuras;
+
 public enum Color {
     NINGUNO,
 

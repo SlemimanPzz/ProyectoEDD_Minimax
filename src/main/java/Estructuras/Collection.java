@@ -1,4 +1,4 @@
-//import java.util.Comparator;
+package Estructuras;//import java.util.Comparator;
 
 public interface Collection<T> extends Iterable<T> {
 

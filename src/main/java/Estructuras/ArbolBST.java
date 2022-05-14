@@ -1,3 +1,5 @@
+package Estructuras;
+
 import java.util.Iterator;
 
 public class ArbolBST<T extends Comparable<T>> extends ArbolBinario<T>{

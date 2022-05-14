@@ -1,3 +1,5 @@
+package Estructuras;
+
 /**
  * Clase para árboles rojinegros. Un árbol rojinegro cumple las siguientes
  * propiedades:

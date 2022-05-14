@@ -1,3 +1,5 @@
+package Estructuras;
+
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -14,7 +16,7 @@ import java.util.NoSuchElementException;
 public class ArbolBinarioCompleto<T> extends ArbolBinario<T> {
     /* Clase privada para iteradores de árboles binarios completos. */
     private class Iterador implements Iterator<T>{
-        /* Cola para recorrer los vértices en BFS. */
+        /* Estructuras.Cola para recorrer los vértices en BFS. */
         private Cola<Vertice> cola;
 
         public Iterador(){

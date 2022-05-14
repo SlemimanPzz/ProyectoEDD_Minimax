@@ -1,3 +1,5 @@
+package Estructuras;
+
 public class Cola<T> extends PushPop<T> {
     /**
      * Regresa una representación en cadena de la cola.

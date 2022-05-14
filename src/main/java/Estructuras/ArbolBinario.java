@@ -1,3 +1,5 @@
+package Estructuras;
+
 import java.util.NoSuchElementException;
 
 /**

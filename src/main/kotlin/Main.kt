@@ -1,32 +1,32 @@
+import Estructuras.Lista
 import  kotlin.io.readln
-
 
 fun main() {
     println("Hello World!")
 
     println("Dime tu nombre:")
-    var s : String  = ""
+    var s = ""
     while(s.length < 3){
-        println("ingresa:")
         s = readln()
+        if(s.length < 3) println("Tu nombre debe tener 3 o mas caracteres.")
     }
-    println("Tu nombre sera $s, estas seguro que quieres ese nombre.")
+    println("Tu nombre sera $s.")
 
+    val humano  = Jugador(s, Lista<Nodo>(), null)
+    val comp = Computadora(Lista<Nodo>(), humano, ModoJuego.RANDOM)
+    humano.oponente = comp
+    val fichas = arrayOf(Ficha(1, humano), Ficha(2, humano), Ficha(3, comp), Ficha(4, comp))
 
-
-    val humano  = Jugador(s, null, null)
-    val compu = Computadora()
-    val fichas = arrayOf(Ficha(1, humano), Ficha(2, humano), Ficha(3, compu), Ficha(4, compu))
-    humano.ficha1 = fichas[0]
-    humano.ficha2 = fichas[1]
-    compu.ficha1 = fichas[2]
-    compu.ficha2 = fichas[3]
-
-
-    val tablero = Tablero(fichas, humano)
+    val tablero = Tablero(fichas, humano, comp)
 
     println(tablero)
 
-    tablero.mueveJugador()
-    print(tablero)
+    var x = true
+    while (x){
+        tablero.mueveActor(humano)
+        println(tablero)
+        tablero.mueveActor(comp)
+        println(tablero)
+        if(tablero.equals(null)) x = false
+    }
 }

@@ -1,3 +1,5 @@
+package Estructuras;
+
 /**
  * Clase para excepciones de índices de lista inválidos.
  */
