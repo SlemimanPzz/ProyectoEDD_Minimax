@@ -29,6 +29,16 @@ class Computadora(override var nodosJugador: Lista<Nodo>, override var oponente:
         TODO("Not yet implemented")
     }
 
+    private fun piensa(){
+        print("CPU: Pensando")
+        for (x in 1 .. 3){
+            Thread.sleep(700)
+            print(".")
+        }
+        Thread.sleep(500)
+        println()
+    }
+
     /**
      * Movimiento aleatorio
      */
@@ -41,6 +51,7 @@ class Computadora(override var nodosJugador: Lista<Nodo>, override var oponente:
             nodosJugador.limpia()
             nodosJugador.agregaFinal(movido)
             nodosJugador.agregaFinal(estatico)
+            piensa()
             println("$this: Moviendo ficha ${movido.valor?.id} automáticamente")
             return
         }
@@ -50,6 +61,7 @@ class Computadora(override var nodosJugador: Lista<Nodo>, override var oponente:
             nodosJugador.limpia()
             nodosJugador.agregaFinal(movido)
             nodosJugador.agregaFinal(estatico)
+            piensa()
             println("$this:  ficha ${movido.valor?.id} automáticamente")
             return
         }
@@ -57,6 +69,7 @@ class Computadora(override var nodosJugador: Lista<Nodo>, override var oponente:
 
         if(!puedesMover){
             println("El CPU ya no puede moverse.")
+            Thread.sleep(400)
             println("Haz ganado, $oponente!!!")
             println("El ganador es: $oponente")
             exitProcess(0)
@@ -64,6 +77,7 @@ class Computadora(override var nodosJugador: Lista<Nodo>, override var oponente:
 
         val i = Random.nextInt() % 2
         val movido : Nodo
+        piensa()
         if(i == 0){
             movido = nodosJugador.primero.mueveFicha()
             val quieto = nodosJugador.ultimo

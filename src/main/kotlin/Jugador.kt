@@ -19,20 +19,28 @@ class Jugador(private val nombre:String, override var nodosJugador: Lista<Nodo>,
         var puedesMover = true
         if(nodosJugador.get(0).atrapado() && nodosJugador.get(1).atrapado()) puedesMover = false
         else if(nodosJugador.get(1).atrapado()){
+            println("Solo puedes mover ${nodosJugador.get(0).valor?.id}")
+            println("Presiona enter para continuar o cualquier tecla para salir")
+            if(readLine() != "") exitProcess(1)
             val movido = nodosJugador.get(0).mueveFicha()
             val estatico = nodosJugador.get(1)
             nodosJugador.limpia()
             nodosJugador.agregaFinal(movido)
             nodosJugador.agregaFinal(estatico)
+            Thread.sleep(400)
             println("$this: Moviendo ficha ${movido.valor?.id} automáticamente")
             return
         }
         else if(nodosJugador.get(0).atrapado()){
+            println("Solo puedes mover ${nodosJugador.get(1).valor?.id}")
+            println("Presiona enter para continuar o cualquier tecla para salir")
+            if(readLine() != "") exitProcess(1)
             val movido = nodosJugador.get(1).mueveFicha()
             val estatico = nodosJugador.get(0)
             nodosJugador.limpia()
             nodosJugador.agregaFinal(movido)
             nodosJugador.agregaFinal(estatico)
+            Thread.sleep(400)
             println("$this:  ficha ${movido.valor?.id} automáticamente")
             return
         }
@@ -66,6 +74,7 @@ class Jugador(private val nombre:String, override var nodosJugador: Lista<Nodo>,
             nodosJugador.limpia()
             nodosJugador.agregaFinal(quieto)
             nodosJugador.agregaFinal(movido)
+            Thread.sleep(400)
             println("$this: Ficha ${movido.valor} movida")
         }
         else {
@@ -74,6 +83,7 @@ class Jugador(private val nombre:String, override var nodosJugador: Lista<Nodo>,
             nodosJugador.limpia()
             nodosJugador.agregaFinal(movido)
             nodosJugador.agregaFinal(quito)
+            Thread.sleep(400)
             println("$this: Ficha ${movido.valor} movida")
         }
 
