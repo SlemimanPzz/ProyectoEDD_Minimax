@@ -1,7 +1,19 @@
 import Estructuras.Lista
 import kotlin.system.exitProcess
 
+/**
+ * Jugador humano del juego.
+ *
+ * @property nombre Nombre del jugador.
+ * @property nodosJugador La [Lista] de nodos ocupados actualmente por el jugador.
+ * @property oponente Oponente del jugador.
+ */
 class Jugador(private val nombre:String, override var nodosJugador: Lista<Nodo>, override var oponente: Actor?): Actor {
+
+    /**
+     * Mueve el jugador su ficha, o en su defecto mueve automáticamente si solo queda una opción o
+     * termina el juego si este pierde.
+     */
     override fun mueve(){
 
         var puedesMover = true

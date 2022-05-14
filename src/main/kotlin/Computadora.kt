@@ -2,7 +2,19 @@ import Estructuras.Lista
 import kotlin.random.Random
 import kotlin.system.exitProcess
 
-class Computadora(override var nodosJugador: Lista<Nodo>, override var oponente: Actor?, val mode : ModoJuego) : Actor {
+
+/**
+ * Computer player unit capaz de jugar el juego en diversos modos.
+ *
+ * @property nodosJugador La [Lista] de nodos en el cual la computadora tiene sus fichas.
+ * @property oponente Oponente de la computadora.
+ * @property mode Modo de juego definido en [ModoJuego] en el que la computadora actuara.
+ */
+class Computadora(override var nodosJugador: Lista<Nodo>, override var oponente: Actor?, private val mode : ModoJuego) : Actor {
+
+    /**
+     * Mueve dependiendo del modo de juego que esté la computadora.
+     */
     override fun mueve() {
        when(mode){
            ModoJuego.RANDOM -> mueveRandom()
@@ -10,10 +22,16 @@ class Computadora(override var nodosJugador: Lista<Nodo>, override var oponente:
        }
     }
 
+    /**
+     * Movimiento utilizando Minimax
+     */
     private fun mueveMinimax() {
         TODO("Not yet implemented")
     }
 
+    /**
+     * Movimiento aleatorio
+     */
     private fun mueveRandom() {
         var puedesMover = true
         if(nodosJugador.get(0).atrapado() && nodosJugador.get(1).atrapado()) puedesMover = false
