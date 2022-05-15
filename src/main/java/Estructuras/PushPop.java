@@ -3,7 +3,7 @@ package Estructuras;
 import java.util.NoSuchElementException;
 
 public abstract class PushPop<T> {
-    // Clase Nodo
+    // Clase Minimax.Mesa.Nodo
     protected class Nodo {
         public T elemento;
         public Nodo siguiente;

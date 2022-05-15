@@ -1,9 +1,11 @@
+package Minimax.Mesa
+
 import Estructuras.Lista
 
 /**
  * Nodos que se utilizaran en [Tablero] para jugar el juego.
  *
- * @property i ID del Nodo.
+ * @property i ID del Minimax.Mesa.Nodo.
  * @property valor La ficha contenida en el nodo, si es que la tiene.
  * @property vecindad Vecindad del nodo.
  */

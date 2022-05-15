@@ -235,7 +235,7 @@ public class ArbolBST<T extends Comparable<T>> extends ArbolBinario<T>{
         //Creamos el vertice que sera el izquierdo recusrivamente
         Vertice izq = buildSortedAux(n / 2, iter);
         
-        //Nodo actual tendra que ser la cabeza, o el menor de los elementos aun no agregados
+        //Minimax.Mesa.Nodo actual tendra que ser la cabeza, o el menor de los elementos aun no agregados
         Vertice nodo = new Vertice(iter.next());
 
         //Ya que creamos el nodo podemos asignar si izquierdo

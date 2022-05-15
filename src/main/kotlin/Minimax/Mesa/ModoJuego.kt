@@ -1,3 +1,5 @@
+package Minimax.Mesa
+
 /**
  * Modos de juego posibles contra una CPU
  */

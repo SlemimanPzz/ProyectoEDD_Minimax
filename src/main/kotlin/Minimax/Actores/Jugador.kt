@@ -1,8 +1,11 @@
+package Minimax.Actores
+
 import Estructuras.Lista
+import Minimax.Mesa.Nodo
 import kotlin.system.exitProcess
 
 /**
- * Jugador humano del juego.
+ * Minimax.Actores.Jugador humano del juego.
  *
  * @property nombre Nombre del jugador.
  * @property nodosJugador La [Lista] de nodos ocupados actualmente por el jugador.
@@ -10,6 +13,7 @@ import kotlin.system.exitProcess
  */
 class Jugador(private val nombre:String, override var nodosJugador: Lista<Nodo>, override var oponente: Actor?): Actor {
 
+    var ultimoMovimiento : Int = -1
     /**
      * Mueve el jugador su ficha, o en su defecto mueve automáticamente si solo queda una opción o
      * termina el juego si este pierde.
@@ -19,16 +23,15 @@ class Jugador(private val nombre:String, override var nodosJugador: Lista<Nodo>,
         var puedesMover = true
         if(nodosJugador.get(0).atrapado() && nodosJugador.get(1).atrapado()) puedesMover = false
         else if(nodosJugador.get(1).atrapado()){
-            println("Solo puedes mover ${nodosJugador.get(0).valor?.id}")
+            println("Solo puedes mover ${nodosJugador.get(0).valor}")
             println("Presiona enter para continuar o cualquier tecla para salir")
             if(readLine() != "") exitProcess(1)
             val movido = nodosJugador.get(0).mueveFicha()
-            val estatico = nodosJugador.get(1)
-            nodosJugador.limpia()
-            nodosJugador.agregaFinal(movido)
-            nodosJugador.agregaFinal(estatico)
+            nodosJugador.eliminaPrimero()
+            nodosJugador.agregaInicio(movido)
             Thread.sleep(400)
-            println("$this: Moviendo ficha ${movido.valor?.id} automáticamente")
+            println("$this: Moviendo ficha ${movido.valor} automáticamente")
+            ultimoMovimiento = 0
             return
         }
         else if(nodosJugador.get(0).atrapado()){
@@ -36,12 +39,11 @@ class Jugador(private val nombre:String, override var nodosJugador: Lista<Nodo>,
             println("Presiona enter para continuar o cualquier tecla para salir")
             if(readLine() != "") exitProcess(1)
             val movido = nodosJugador.get(1).mueveFicha()
-            val estatico = nodosJugador.get(0)
-            nodosJugador.limpia()
+            nodosJugador.eliminaUltimo()
             nodosJugador.agregaFinal(movido)
-            nodosJugador.agregaFinal(estatico)
             Thread.sleep(400)
             println("$this:  ficha ${movido.valor?.id} automáticamente")
+            ultimoMovimiento = 1
             return
         }
 
@@ -70,24 +72,37 @@ class Jugador(private val nombre:String, override var nodosJugador: Lista<Nodo>,
         val movido : Nodo
         if(i == nodosJugador.primero.valor?.id){
             movido = nodosJugador.primero.mueveFicha()
-            val quieto = nodosJugador.ultimo
-            nodosJugador.limpia()
-            nodosJugador.agregaFinal(quieto)
-            nodosJugador.agregaFinal(movido)
+            nodosJugador.eliminaPrimero()
+            nodosJugador.agregaInicio(movido)
             Thread.sleep(400)
-            println("$this: Ficha ${movido.valor} movida")
+            println("$this: Minimax.Mesa.Ficha ${movido.valor} movida")
         }
         else {
             movido = nodosJugador.ultimo.mueveFicha()
-            val quito = nodosJugador.primero
-            nodosJugador.limpia()
+            nodosJugador.eliminaUltimo()
             nodosJugador.agregaFinal(movido)
-            nodosJugador.agregaFinal(quito)
             Thread.sleep(400)
-            println("$this: Ficha ${movido.valor} movida")
+            println("$this: Minimax.Mesa.Ficha ${movido.valor} movida")
         }
+        ultimoMovimiento = i
 
     }
+
+    override fun clone(): Jugador {
+        return Jugador(nombre, Lista(), null)
+    }
+
+    override fun mueveEspecifico(i: Int): Boolean {
+        return if(nodosJugador.get(i).atrapado()){
+            false
+        } else {
+            nodosJugador.get(i).mueveFicha()
+            true
+        }
+    }
+
+
+
 
     override fun toString(): String {
         return nombre.substring(0 .. 2)

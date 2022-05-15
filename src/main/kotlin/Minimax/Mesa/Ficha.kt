@@ -1,3 +1,6 @@
+package Minimax.Mesa
+
+import Minimax.Actores.Actor
 
 /**
  * Fichas dentro del juego, con su [id] y [propietario].
@@ -15,4 +18,5 @@ class Ficha (val id: Int, private val propietario: Actor){
     override fun toString(): String {
         return "%01d $propietario".format(id)
     }
+
 }
