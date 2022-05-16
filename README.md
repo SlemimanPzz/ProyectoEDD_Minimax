@@ -55,5 +55,7 @@ gradle dokkaHtml
 ```
 Esta se obtendrá en `build/dokka/html/index.html`. 
 ***
+>[github](https://github.com/SlemimanPzz/ProyectoEDD_Minimax) del Proyecto
+
 >Hasta el momento el proyecto no esta terminado ni al parecer funciona el `.\gradlew.bat`
 > ni en Windows.

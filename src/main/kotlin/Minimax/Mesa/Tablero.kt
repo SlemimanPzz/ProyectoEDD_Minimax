@@ -6,6 +6,7 @@ import Minimax.Actores.CambiaModo
 import Minimax.Actores.Computadora
 import Minimax.Actores.Jugador
 import Minimax.Minimax
+import java.util.Arrays
 import kotlin.system.exitProcess
 
 /**
@@ -17,6 +18,7 @@ import kotlin.system.exitProcess
  * @property nodosJugador Los nodos pertenecientes a [jugador1] en ese instante.
  * @constructor Se crean todas las vecindades y asignamos los nodos de los [Actor] en el juego.
  */
+@Suppress("UNREACHABLE_CODE")
 class Tablero(private val fichas: Array<Ficha>, private val jugador1: Jugador, private val computadora : Computadora, private var mode  :ModoJuego, primero : Actor) {
 
     private var nodosTablero: Array<Nodo> = Array(5) { i -> Nodo(i, null) }
@@ -177,7 +179,6 @@ class Tablero(private val fichas: Array<Ficha>, private val jugador1: Jugador, p
                 // Pierde computadora
                 computadora -> minimax = Int.MAX_VALUE
             }
-            println("Minimax asignado")
             return null
         }
         if(sePudoMoverDer && sePudoMoverIzq)
@@ -203,11 +204,45 @@ class Tablero(private val fichas: Array<Ficha>, private val jugador1: Jugador, p
 
     fun clone() : Tablero{
         return if(siguienteJugador == jugador1){
-            val clon1 = jugador1.clone()
-            Tablero(fichas, clon1, computadora.clone(), mode ,clon1)
+            val clonJugador = jugador1.clone()
+            val clonCompu = computadora.clone()
+            val clon = Tablero(fichas, clonJugador, clonCompu, mode ,clonJugador)
+
+
+
+            for(x in 0 .. 4){
+                    clon.nodosTablero[x].valor = nodosTablero[x].valor
+            }
+
+            clonJugador.nodosJugador.limpia()
+            clon.nodosTablero.forEach { if(it.valor?.id == 1) clonJugador.nodosJugador.agregaFinal(it)}
+            clon.nodosTablero.forEach { if(it.valor?.id == 2) clonJugador.nodosJugador.agregaFinal(it)}
+
+            clonCompu.nodosJugador.limpia()
+            clon.nodosTablero.forEach { if(it.valor?.id == 3) clonCompu.nodosJugador.agregaFinal(it)}
+            clon.nodosTablero.forEach { if(it.valor?.id == 4)clonCompu.nodosJugador.agregaFinal(it) }
+
+
+            return clon
         } else{
-            val clon2 = computadora.clone()
-            Tablero(fichas, jugador1.clone(), clon2, mode , clon2)
+            val clonCompu = computadora.clone()
+            val clonJugador = jugador1.clone()
+            val clon = Tablero(fichas, clonJugador, clonCompu, mode , clonCompu)
+
+
+            for(x in 0 .. 4){
+                clon.nodosTablero[x].valor = nodosTablero[x].valor
+            }
+
+            clonJugador.nodosJugador.limpia()
+            clon.nodosTablero.forEach { if(it.valor?.id == 1) clonJugador.nodosJugador.agregaFinal(it)}
+            clon.nodosTablero.forEach { if(it.valor?.id == 2) clonJugador.nodosJugador.agregaFinal(it)}
+
+            clonCompu.nodosJugador.limpia()
+            clon.nodosTablero.forEach { if(it.valor?.id == 3) clonCompu.nodosJugador.agregaFinal(it)}
+            clon.nodosTablero.forEach { if(it.valor?.id == 4)clonCompu.nodosJugador.agregaFinal(it) }
+
+            return clon
         }
     }
 

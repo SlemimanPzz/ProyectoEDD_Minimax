@@ -26,14 +26,13 @@ class Computadora(override var nodosJugador: Lista<Nodo>, override var oponente:
             nodosJugador.eliminaPrimero()
             nodosJugador.agregaInicio(movido)
             return true
-        } else if (i == 1) {
+        } else{
             if (nodosJugador.get(1).atrapado()) return false
             val movido = nodosJugador.get(1).mueveFicha()
             nodosJugador.eliminaUltimo()
             nodosJugador.agregaFinal(movido)
             return true
         }
-        return false
     }
 
     fun mueveMinimax(i :Int) : Boolean {

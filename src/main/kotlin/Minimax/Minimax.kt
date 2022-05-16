@@ -45,9 +45,9 @@ class Minimax() : ArbolBinario<Tablero>() {
                 nodo.izquierdo = Vertice(minmax[0])
                 nodo.derecho = Vertice(minmax[1])
                 if(nodo.elemento.minimaxMayorMenor() == 1){
-                    nodo.elemento.minimax = Math.max(nodo.izquierdo.elemento.minimax,nodo.derecho.elemento.minimax)
+                    nodo.elemento.minimax = Math.max(nodo.izquierdo.elemento.minimax, nodo.derecho.elemento.minimax)
                 } else if(nodo.elemento.minimaxMayorMenor() == -1)
-                    nodo.elemento.minimax = Math.min(nodo.izquierdo.elemento.minimax,nodo.derecho.elemento.minimax)
+                    nodo.elemento.minimax = Math.min(nodo.izquierdo.elemento.minimax, nodo.derecho.elemento.minimax)
                 return
             }
 
@@ -88,8 +88,8 @@ class Minimax() : ArbolBinario<Tablero>() {
         }
         if(raiz.derecho == null) return 0
         if(raiz.izquierdo == null) return 1
-        if(raiz.izquierdo.elemento.minimax < raiz.izquierdo.elemento.minimax) return 0
-        if(raiz.izquierdo.elemento.minimax > raiz.izquierdo.elemento.minimax) return 1
+        if(raiz.izquierdo.elemento.minimax < raiz.derecho.elemento.minimax) return 0
+        if(raiz.izquierdo.elemento.minimax > raiz.derecho.elemento.minimax) return 1
         else{
             return kotlin.random.Random.nextInt(0 .. 1000) % 2
         }

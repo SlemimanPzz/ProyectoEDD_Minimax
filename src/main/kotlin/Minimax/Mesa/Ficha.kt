@@ -8,7 +8,7 @@ import Minimax.Actores.Actor
  * @property id ID de la ficha.
  * @property propietario Propietario de la ficha.
  */
-class Ficha (val id: Int, private val propietario: Actor){
+class Ficha (val id: Int, val propietario: Actor){
 
     /**
      * [toString] de ficha
@@ -17,6 +17,9 @@ class Ficha (val id: Int, private val propietario: Actor){
      */
     override fun toString(): String {
         return "%01d $propietario".format(id)
+    }
+    fun clone(): Ficha {
+        return Ficha(id, propietario)
     }
 
 }

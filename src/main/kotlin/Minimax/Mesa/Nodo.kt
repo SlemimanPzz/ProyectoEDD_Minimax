@@ -9,7 +9,7 @@ import Estructuras.Lista
  * @property valor La ficha contenida en el nodo, si es que la tiene.
  * @property vecindad Vecindad del nodo.
  */
-class Nodo(private val i : Int, var valor : Ficha?, val vecindad: Lista<Nodo> = Lista<Nodo>()){
+class Nodo(val i : Int, var valor : Ficha?, val vecindad: Lista<Nodo> = Lista<Nodo>()){
 
     /**
      * Regresa una representation en cadena del nodo, tenga o no ficha
@@ -43,7 +43,10 @@ class Nodo(private val i : Int, var valor : Ficha?, val vecindad: Lista<Nodo> = 
             this.valor = null
             return it
         }}
-        return this
+        throw RuntimeException()
+    }
+    fun clone(): Nodo {
+        return Nodo(i, valor?.clone(), vecindad.copia())
     }
 
 }

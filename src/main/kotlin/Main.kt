@@ -17,6 +17,8 @@ fun main() {
         if(s.length < 3) println("Tu nombre debe tener 3 o mas caracteres.")
     }
     println("Tu nombre sera $s.")
+    println("Recuerda en cualquier momento puedes Cambiar de Modo con x")
+    println("Iniciaremos en modo Minimax")
 
     val humano  = Jugador(s, Lista<Nodo>(), null)
     val comp = Computadora(Lista<Nodo>(), humano,)
