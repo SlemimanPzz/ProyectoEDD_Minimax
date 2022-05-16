@@ -1,7 +1,7 @@
-package Minimax.Actores
+package minimax.Actores
 
 import Estructuras.Lista
-import Minimax.Mesa.Nodo
+import minimax.mesa.Nodo
 import kotlin.system.exitProcess
 
 /**
@@ -13,7 +13,6 @@ import kotlin.system.exitProcess
  */
 class Jugador(private val nombre:String, override var nodosJugador: Lista<Nodo>, override var oponente: Actor?): Actor {
 
-    var ultimoMovimiento : Int = -1
     /**
      * Mueve el jugador su ficha, o en su defecto mueve automáticamente si solo queda una opción o
      * termina el juego si este pierde.
@@ -21,6 +20,7 @@ class Jugador(private val nombre:String, override var nodosJugador: Lista<Nodo>,
     override fun mueve() : Int{
 
         var puedesMover = true
+
         if(nodosJugador.get(0).atrapado() && nodosJugador.get(1).atrapado()) puedesMover = false
         else if(nodosJugador.get(1).atrapado()){
             println("Solo puedes mover ${nodosJugador.get(0).valor}")
@@ -33,9 +33,9 @@ class Jugador(private val nombre:String, override var nodosJugador: Lista<Nodo>,
             nodosJugador.agregaInicio(movido)
             Thread.sleep(400)
             println("$this: Moviendo ficha ${movido.valor} automáticamente")
-            ultimoMovimiento = 0
             return 0
         }
+
         else if(nodosJugador.get(0).atrapado()){
             println("Solo puedes mover ${nodosJugador.get(1).valor?.id}")
             println("Presiona enter para continuar, x para cambiar de modo o cualquier tecla para salir")
@@ -47,7 +47,6 @@ class Jugador(private val nombre:String, override var nodosJugador: Lista<Nodo>,
             nodosJugador.agregaFinal(movido)
             Thread.sleep(400)
             println("$this:  ficha ${movido.valor?.id} automáticamente")
-            ultimoMovimiento = 1
             return 1
         }
 
@@ -91,14 +90,22 @@ class Jugador(private val nombre:String, override var nodosJugador: Lista<Nodo>,
             Thread.sleep(400)
             println("$this: Minimax.Mesa.Ficha ${movido.valor} movida")
         }
-        ultimoMovimiento = x
         return  x - 1
     }
 
+    /**
+     * Regresa una copia del jugador.
+     * @return una copia del jugador.
+     */
     override fun clone(): Jugador {
         return Jugador(nombre, Lista(), null)
     }
 
+    /**
+     * Mueve una ficha específicamente del jugador, utilizado únicamente en la generación del [minimax]
+     *
+     * @return `true` si se logro el movimiento, `false` si no es posible el movimiento.
+     */
     override fun mueveEspecifico(i: Int): Boolean {
         if (nodosJugador.get(0).atrapado() && nodosJugador.get(1).atrapado()) return false
         else if (i == 0) {
@@ -118,8 +125,10 @@ class Jugador(private val nombre:String, override var nodosJugador: Lista<Nodo>,
     }
 
 
-
-
+    /**
+     * Regresa una representación en cadena del jugador.
+     * @return una representación en cadena del jugador.
+     */
     override fun toString(): String {
         return nombre.substring(0 .. 2)
     }

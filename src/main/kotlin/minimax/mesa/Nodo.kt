@@ -1,4 +1,4 @@
-package Minimax.Mesa
+package minimax.mesa
 
 import Estructuras.Lista
 
@@ -12,9 +12,8 @@ import Estructuras.Lista
 class Nodo(val i : Int, var valor : Ficha?, val vecindad: Lista<Nodo> = Lista<Nodo>()){
 
     /**
-     * Regresa una representation en cadena del nodo, tenga o no ficha
-     *
-     * @return el nodo
+     * Regresa una representación en cadena del nodo, tenga o no ficha.
+     * @return una representación en cadena del nodo, tenga o no ficha.
      */
     override fun toString(): String {
         if(valor != null) return "|$valor|"
@@ -23,8 +22,7 @@ class Nodo(val i : Int, var valor : Ficha?, val vecindad: Lista<Nodo> = Lista<No
     }
 
     /**
-     * Nos dice si el nodo esta atrapado
-     *
+     * Nos dice si el nodo esta atrapado.
      * @return `false` si no esta atrapado, `true` si lo esta.
      */
     fun atrapado() : Boolean {
@@ -33,8 +31,7 @@ class Nodo(val i : Int, var valor : Ficha?, val vecindad: Lista<Nodo> = Lista<No
     }
 
     /**
-     * Mueve la ficha al nodo disponible
-     *
+     * Mueve la ficha al nodo disponible.
      * @return Regresa el nodo al que fue la ficha.
      */
     fun mueveFicha() : Nodo {
@@ -44,9 +41,6 @@ class Nodo(val i : Int, var valor : Ficha?, val vecindad: Lista<Nodo> = Lista<No
             return it
         }}
         throw RuntimeException()
-    }
-    fun clone(): Nodo {
-        return Nodo(i, valor?.clone(), vecindad.copia())
     }
 
 }

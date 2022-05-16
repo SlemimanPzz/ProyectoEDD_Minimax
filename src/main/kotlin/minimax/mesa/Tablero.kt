@@ -1,12 +1,11 @@
-package Minimax.Mesa
+package minimax.mesa
 
 import Estructuras.Lista
-import Minimax.Actores.Actor
-import Minimax.Actores.CambiaModo
-import Minimax.Actores.Computadora
-import Minimax.Actores.Jugador
-import Minimax.Minimax
-import java.util.Arrays
+import minimax.Actores.Actor
+import minimax.Actores.CambiaModo
+import minimax.Actores.Computadora
+import minimax.Actores.Jugador
+import minimax.Minimax
 import kotlin.system.exitProcess
 
 /**
@@ -16,12 +15,18 @@ import kotlin.system.exitProcess
  * @property jugador1 Minimax.Actores.Jugador humano de la partida.
  * @property nodosTablero Los nodos del tablero.
  * @property nodosJugador Los nodos pertenecientes a [jugador1] en ese instante.
+ * @property nodosComputa Los nodos pertenecientes a [computadora] en este instante.
+ * @property mode El modo del juego en el momento, se puede cambiar en cualquier momento.
+ * @property siguienteJugador El siguiente jugador en ese momento.
+ * @property minimax Propiedad de minimax para cuando se esté en [ModoJuego.MINIMAX]
+ * @property invalido Nos dice si es válido el tablero.
+ * @property arbolMinimax El minimax en el caso que se este en ese modo.
  * @constructor Se crean todas las vecindades y asignamos los nodos de los [Actor] en el juego.
  */
 @Suppress("UNREACHABLE_CODE")
 class Tablero(private val fichas: Array<Ficha>, private val jugador1: Jugador, private val computadora : Computadora, private var mode  :ModoJuego, primero : Actor) {
 
-    private var nodosTablero: Array<Nodo> = Array(5) { i -> Nodo(i, null) }
+    var nodosTablero: Array<Nodo> = Array(5) { i -> Nodo(i, null) }
     private var nodosJugador: Lista<Nodo> = Lista<Nodo>()
     private var nodosComputa: Lista<Nodo> = Lista<Nodo>()
 
@@ -91,6 +96,9 @@ class Tablero(private val fichas: Array<Ficha>, private val jugador1: Jugador, p
         nodosComputa = computadora.nodosJugador
     }
 
+    /**
+     * Hace el siguiente movimiento dependiendo del  [mode].
+     */
     fun mueveSiguiente(){
         if(mode == ModoJuego.MINIMAX) mueveSiguienteMinimax()
         else {
@@ -111,7 +119,9 @@ class Tablero(private val fichas: Array<Ficha>, private val jugador1: Jugador, p
         }
     }
 
-
+    /**
+     * Hace él mueve siguiente con [Minimax]
+     */
     private fun mueveSiguienteMinimax(){
         arbolMinimax = Minimax(this)
         if(siguienteJugador == computadora){
@@ -144,7 +154,12 @@ class Tablero(private val fichas: Array<Ficha>, private val jugador1: Jugador, p
         }
     }
 
-    private fun mueveSiguienteEspecifico(i  :Int) : Boolean{
+    /**
+     * Mueve la ficha específica del [siguienteJugador] con [Actor.mueveEspecifico]
+     *
+     *@return Lo mismo que [Actor.mueveEspecifico]
+     */
+    fun mueveSiguienteEspecifico(i  :Int) : Boolean{
         return if(siguienteJugador.mueveEspecifico(i)){
             siguienteJugador= when(siguienteJugador){
                 jugador1 -> computadora
@@ -167,6 +182,13 @@ class Tablero(private val fichas: Array<Ficha>, private val jugador1: Jugador, p
         actor.mueve()
     }
 
+    /**
+     * Nos da el siguiente minimax, con un arreglo de los 2 tableros posible moviendo cada una de las 2
+     * fichas del siguiente jugador.
+     *
+     * @return `null` cuando ya no es posible hacer movimientos, también asigna el minimax correspondiente.
+     * Si no termina, entonces nos dice si el movimiento es válido y válida el tablero.
+     */
     fun darSigMinimax() : Array<Tablero>? {
         val tableroIzquier = this.clone()
         val tableroDerecho = this.clone()
@@ -193,6 +215,12 @@ class Tablero(private val fichas: Array<Ficha>, private val jugador1: Jugador, p
         }
     }
 
+    /**
+     * Para el Minimax nos dice que valor tomar dependiendo de que jugador sigue.
+     *
+     * @return `1` cuando queremos el maximo valor, ya que el siguiente en jugar es el jugador
+     * y `-1` queremos el minimo valor, ya que el siguiente en jugar es la computadora.
+     */
     fun minimaxMayorMenor() : Int{
         return when(siguienteJugador){
             jugador1 -> 1                   //Queremos el maximo valor ya que el siguiente en jugar es el jugador
@@ -202,6 +230,10 @@ class Tablero(private val fichas: Array<Ficha>, private val jugador1: Jugador, p
     }
 
 
+    /**
+     * Clona el tablero entero. Tomando en cuenta el estado actual de los nodos y el siguiente jugador.
+     * @return El tablero clonado.
+     */
     fun clone() : Tablero{
         return if(siguienteJugador == jugador1){
             val clonJugador = jugador1.clone()
@@ -249,7 +281,6 @@ class Tablero(private val fichas: Array<Ficha>, private val jugador1: Jugador, p
     /**
      * Nos da la representation en cadena del juego, con fichas colocadas
      * y a quien le pertenece cada ficha.
-     *
      * @return El talero en [String]
      */
     override fun toString(): String {

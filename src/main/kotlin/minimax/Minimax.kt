@@ -1,13 +1,25 @@
-package Minimax
+package minimax
 
 import Estructuras.ArbolBinario
-import Minimax.Mesa.Tablero
-import java.util.Random
+import minimax.mesa.Tablero
 import kotlin.random.nextInt
 
+
+/**
+ * Clase Minimax que extiende al [ArbolBinario], ya que como los jugadores tienen 2 fichas y estas
+ * solo se puede mover a un nodo, con un [ArbolBinario] basta para represent todos los movimientos posibles.
+ *
+ */
 class Minimax() : ArbolBinario<Tablero>() {
 
-   constructor(tablero : Tablero) : this() {
+
+    /**
+     * Constructor que emplea un tablero como base y de ahi desarrolla los siguientes 10
+     * movimientos posibles, ya que si no se va al infinito, para tomar decisiones con base en Minimax.
+     *
+     * @param tablero Tablero base para generar los siguientes 10 movimientos posibles.
+     */
+    constructor(tablero : Tablero) : this() {
        val clon = tablero.clone()
        raiz = nuevoVertice(clon)
        generaMinimax(raiz, clon, 0)
@@ -15,16 +27,22 @@ class Minimax() : ArbolBinario<Tablero>() {
    }
 
 
-
-    private fun generaMinimax(nodo : Vertice, tablero : Tablero, indie : Int){
+    /**
+     * Genera el minimax a de un vertices tomando en cuenta un [Tablero] base y con un límite indicado
+     * por el índice.
+     *
+     * @param nodo El nodo base del cual generar el minimax.
+     * @param tablero El tablero base para generar el minimax.
+     * @param indice Cuanta la profundidad de la construction actual.
+     */
+    private fun generaMinimax(nodo : Vertice, tablero : Tablero, indice : Int){
 
         nodo.elemento = tablero
 
         val minmax = tablero.darSigMinimax() ?: return
 
-        //Escape si ya se perdio
-        //Limite para el arbol
-        if(indie == 10){
+
+        if(indice == 10){
 
             if(minmax[0].invalido){
                 nodo.izquierdo = null
@@ -55,22 +73,22 @@ class Minimax() : ArbolBinario<Tablero>() {
         if(minmax[0].invalido){
             nodo.izquierdo = null
             nodo.derecho = Vertice(minmax[1])
-            generaMinimax(nodo.derecho, minmax[1], indie + 1)
+            generaMinimax(nodo.derecho, minmax[1], indice + 1)
             nodo.elemento.minimax = nodo.derecho.elemento.minimax
             return
         }
         else if(minmax[1].invalido){
             nodo.derecho = null
             nodo.izquierdo =  Vertice(minmax[0])
-            generaMinimax(nodo.izquierdo, minmax[0], indie + 1)
+            generaMinimax(nodo.izquierdo, minmax[0], indice + 1)
             nodo.elemento.minimax = nodo.izquierdo.elemento.minimax
             return
         }
         else {
             nodo.izquierdo = Vertice(minmax[0])
             nodo.derecho = Vertice(minmax[1])
-            generaMinimax(nodo.izquierdo, minmax[0], indie + 1)
-            generaMinimax(nodo.derecho, minmax[1], indie + 1)
+            generaMinimax(nodo.izquierdo, minmax[0], indice + 1)
+            generaMinimax(nodo.derecho, minmax[1], indice + 1)
             nodo.elemento.minimax = when(nodo.elemento.minimaxMayorMenor()){
                 1 -> nodo.izquierdo.elemento.minimax.coerceAtLeast(nodo.derecho.elemento.minimax)
                 -1 -> nodo.izquierdo.elemento.minimax.coerceAtMost(nodo.derecho.elemento.minimax)

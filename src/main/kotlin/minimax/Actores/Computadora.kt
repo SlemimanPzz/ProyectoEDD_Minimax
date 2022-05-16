@@ -1,8 +1,7 @@
-package Minimax.Actores
+package minimax.Actores
 
 import Estructuras.Lista
-import Minimax.Mesa.ModoJuego
-import Minimax.Mesa.Nodo
+import minimax.mesa.Nodo
 import kotlin.random.Random
 import kotlin.system.exitProcess
 
@@ -12,12 +11,15 @@ import kotlin.system.exitProcess
  *
  * @property nodosJugador La [Lista] de nodos en el cual la computadora tiene sus fichas.
  * @property oponente Oponente de la computadora.
- * @property mode Modo de juego definido en [ModoJuego] en el que la computadora actuara.
  */
 class Computadora(override var nodosJugador: Lista<Nodo>, override var oponente: Actor?) :
     Actor {
 
 
+    /**
+     * Mueve una de sus fichas específicamente, si no es posible regresa `false`, utilizado en la generación de [minimax]
+     * @return `true` si se logro el movimiento,  `false` si no fue posible.
+     */
     override fun mueveEspecifico(i: Int): Boolean {
         if (nodosJugador.get(0).atrapado() && nodosJugador.get(1).atrapado()) return false
         else if (i == 0) {
@@ -35,6 +37,13 @@ class Computadora(override var nodosJugador: Lista<Nodo>, override var oponente:
         }
     }
 
+    /**
+     * Movimiento utilizado durante el juego para mover conforme a minimax,
+     * per bien este no corre el minimax, pero recibe la ficha que tiene que mover.
+     *
+     * @param i Ficha a mover.
+     * @return Si se logro el moviemiento, se tiene medida de seguridad.
+     */
     fun mueveMinimax(i :Int) : Boolean {
         if (nodosJugador.get(0).atrapado() && nodosJugador.get(1).atrapado()){
             println("Feliciades $oponente")
@@ -66,12 +75,17 @@ class Computadora(override var nodosJugador: Lista<Nodo>, override var oponente:
     }
 
 
-
+    /**
+     * Clona la computadora.
+     */
     override fun clone(): Computadora {
         return Computadora(Lista<Nodo>(), null )
     }
 
 
+    /**
+     * Método para darle emoción al asunto,
+     */
     fun piensa(){
         print("CPU: Pensando")
         for (x in 1 .. 3){
@@ -131,6 +145,10 @@ class Computadora(override var nodosJugador: Lista<Nodo>, override var oponente:
         return  i
     }
 
+    /**
+     * Regresa una representación en cadena de la computadora.
+     * @return una representación en cadena de la computadora.
+     */
     override fun toString(): String {
         return "CPU"
     }

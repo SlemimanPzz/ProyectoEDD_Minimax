@@ -1,10 +1,10 @@
 import Estructuras.Lista
-import Minimax.Actores.Computadora
-import Minimax.Actores.Jugador
-import Minimax.Mesa.Ficha
-import Minimax.Mesa.ModoJuego
-import Minimax.Mesa.Nodo
-import Minimax.Mesa.Tablero
+import minimax.Actores.Computadora
+import minimax.Actores.Jugador
+import minimax.mesa.Ficha
+import minimax.mesa.ModoJuego
+import minimax.mesa.Nodo
+import minimax.mesa.Tablero
 import  kotlin.io.readln
 
 fun main() {

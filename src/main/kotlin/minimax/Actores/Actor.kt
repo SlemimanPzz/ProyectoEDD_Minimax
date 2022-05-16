@@ -1,7 +1,7 @@
-package Minimax.Actores
+package minimax.Actores
 
 import Estructuras.Lista
-import Minimax.Mesa.Nodo
+import minimax.mesa.Nodo
 
 /**
  * Interfaz para actores dentro del juego
@@ -15,11 +15,21 @@ interface Actor {
     var oponente : Actor?
 
     /**
-     * Mueve el actor sus fichas
+     * Mueve el actor sus fichas, bajo sus criteros.
      */
     fun mueve() : Int
 
+    /**
+     * Mueve una ficha en específico
+     *
+     * @return `true` si se logro el movimiento, `false` si no es posible.
+     */
     fun mueveEspecifico(i : Int) : Boolean
 
+    /**
+     * Clona el actor
+     *
+     * @return un clon del Actor
+     */
     fun clone() : Actor
 }

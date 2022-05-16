@@ -1,4 +1,4 @@
-# Proyecto 2 | Estructura de Datos | Minimax
+# Proyecto 2 | Estructura de Datos | minimax
 
 ---
 ## Ricardo Emiliano Apodaca Cardiel <span style="font-family:monospace">422029455
