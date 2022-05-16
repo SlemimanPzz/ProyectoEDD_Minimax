@@ -12,5 +12,12 @@ enum class ModoJuego {
     /**
      * Movimientos aleatorios
      */
-    RANDOM
+    RANDOM;
+
+    override fun toString(): String {
+        return when(this){
+            MINIMAX -> "Minimax"
+            RANDOM -> "Random"
+        }
+    }
 }
