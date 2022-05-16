@@ -43,6 +43,16 @@ el ejecutable de Linux/MacOS es `ProyectoEDD_Minimax` y en Windows es
 
 ---
 
+### Uso de la Aplicación
+
+Ejecutar el `.jar` o el script de bash mencionados anteriormente.
+Al empezar la ejecución se requerira de un nombre, después esta preguntará por la manera
+que desee que la máquina tome decisiones, minimax o random. Una vez esto ya inicia el juego.
+Se puede cambiar el modo de juego en cualquier momento presionando `x`, o en un enter 
+o cualquier otra tecla para salir.
+
+
+---
 Otra manera sin instalar Gradle es utilizando [gradlew](gradlew) y [gradlew.bat](gradlew.bat)
 ya incluidos en el proyecto, únicamente sustituya `gradle` por `./gradlew` o
 `.\gradlew.bat` dependiendo el caso.
@@ -56,6 +66,6 @@ gradle dokkaHtml
 Esta se obtendrá en `build/dokka/html/index.html`. 
 ***
 >[github](https://github.com/SlemimanPzz/ProyectoEDD_Minimax) del Proyecto
-
+---
 >Hasta el momento el proyecto no esta terminado ni al parecer funciona el `.\gradlew.bat`
-> ni en Windows.
+> ni en Windows. Cualquier otro problema háganmelo saber.

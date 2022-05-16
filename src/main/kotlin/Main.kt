@@ -5,7 +5,6 @@ import Minimax.Mesa.Ficha
 import Minimax.Mesa.ModoJuego
 import Minimax.Mesa.Nodo
 import Minimax.Mesa.Tablero
-import Minimax.Minimax
 import  kotlin.io.readln
 
 fun main() {
@@ -17,14 +16,32 @@ fun main() {
         if(s.length < 3) println("Tu nombre debe tener 3 o mas caracteres.")
     }
     println("Tu nombre sera $s.")
+    Thread.sleep(600)
     println("Recuerda en cualquier momento puedes Cambiar de Modo con x")
-    println("Iniciaremos en modo Minimax")
+    Thread.sleep(800)
+    var i = 0
+    println("Con que modo deseas empezar [1.Minimax|2.Random]")
+    var mode  = ModoJuego.RANDOM
+    while ( i !in 1 .. 2){
+        try {
+            i = readln().toInt()
+            if(i !in 1 .. 2) println("Ingresa un numero valido")
+            mode = when(i){
+                1 -> ModoJuego.MINIMAX
+                2 -> ModoJuego.RANDOM
+                else -> ModoJuego.RANDOM
+            }
+        } catch (nfe : NumberFormatException){
+            println("Ingresa un numero valido")
+        }
+    }
+    println("Escogiste $mode, lo puedes cambiar después presionando x.")
 
     val humano  = Jugador(s, Lista<Nodo>(), null)
     val comp = Computadora(Lista<Nodo>(), humano,)
     humano.oponente = comp
     val fichas = arrayOf(Ficha(1, humano), Ficha(2, humano), Ficha(3, comp), Ficha(4, comp))
-    val tablero = Tablero(fichas, humano, comp, ModoJuego.MINIMAX, humano)
+    val tablero = Tablero(fichas, humano, comp, mode, humano)
     tablero.estableceOrden()
 
     println(tablero)

@@ -27,7 +27,7 @@ class Jugador(private val nombre:String, override var nodosJugador: Lista<Nodo>,
             println("Presiona enter para continuar, x para cambiar de modo o cualquier tecla para salir")
             val bb = readln()
             if(bb == "x") throw CambiaModo()
-            if(bb != "") exitProcess(1)
+            if(bb != "") exitProcess(0)
             val movido = nodosJugador.get(0).mueveFicha()
             nodosJugador.eliminaPrimero()
             nodosJugador.agregaInicio(movido)
@@ -41,7 +41,7 @@ class Jugador(private val nombre:String, override var nodosJugador: Lista<Nodo>,
             println("Presiona enter para continuar, x para cambiar de modo o cualquier tecla para salir")
             val bb = readln()
             if(bb == "x") throw CambiaModo()
-            if(bb != "") exitProcess(1)
+            if(bb != "") exitProcess(0)
             val movido = nodosJugador.get(1).mueveFicha()
             nodosJugador.eliminaUltimo()
             nodosJugador.agregaFinal(movido)
@@ -67,8 +67,8 @@ class Jugador(private val nombre:String, override var nodosJugador: Lista<Nodo>,
                 if(i == "x") throw CambiaModo()
                 x = i.toInt()
             } catch (nfe: NumberFormatException) {
-                println("Ingresa un numero")
-                continue
+                println("Saliendo del juego.")
+                exitProcess(0)
             }
             if (x != 1 && x != 2 ) {
                 println("Escoge una ficha valida [${nodosJugador.primero.valor?.id}|${nodosJugador.ultimo.valor?.id}]")
