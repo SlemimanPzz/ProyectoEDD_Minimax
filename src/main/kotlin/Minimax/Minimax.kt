@@ -2,6 +2,8 @@ package Minimax
 
 import Estructuras.ArbolBinario
 import Minimax.Mesa.Tablero
+import java.util.Random
+import kotlin.random.nextInt
 
 class Minimax() : ArbolBinario<Tablero>() {
 
@@ -12,18 +14,17 @@ class Minimax() : ArbolBinario<Tablero>() {
        println("Minimax Generado")
    }
 
+
+
     private fun generaMinimax(nodo : Vertice, tablero : Tablero, indie : Int){
+
         nodo.elemento = tablero
 
-        val minmax = tablero.darSigMinimax()
+        val minmax = tablero.darSigMinimax() ?: return
 
-        if(minmax == null){
-            nodo.elemento.minimax = nodo.elemento.minimax
-            return
-        }
-
+        //Escape si ya se perdio
+        //Limite para el arbol
         if(indie == 10){
-
 
             if(minmax[0].invalido){
                 nodo.izquierdo = null
@@ -43,11 +44,10 @@ class Minimax() : ArbolBinario<Tablero>() {
             else{
                 nodo.izquierdo = Vertice(minmax[0])
                 nodo.derecho = Vertice(minmax[1])
-                nodo.elemento.minimax = when(nodo.elemento.minimaxMayorMenor()){
-                    1 -> nodo.izquierdo.elemento.minimax.coerceAtLeast(nodo.derecho.elemento.minimax)
-                    -1 -> nodo.izquierdo.elemento.minimax.coerceAtMost(nodo.derecho.elemento.minimax)
-                    else -> 0
-                }
+                if(nodo.elemento.minimaxMayorMenor() == 1){
+                    nodo.elemento.minimax = Math.max(nodo.izquierdo.elemento.minimax,nodo.derecho.elemento.minimax)
+                } else if(nodo.elemento.minimaxMayorMenor() == -1)
+                    nodo.elemento.minimax = Math.min(nodo.izquierdo.elemento.minimax,nodo.derecho.elemento.minimax)
                 return
             }
 
@@ -80,16 +80,31 @@ class Minimax() : ArbolBinario<Tablero>() {
         }
     }
 
+
+    fun darOptimoComputadora() : Int{
+        if(raiz.derecho == null && raiz.izquierdo == null){
+            println("ERROR")
+            return -2
+        }
+        if(raiz.derecho == null) return 0
+        if(raiz.izquierdo == null) return 1
+        if(raiz.izquierdo.elemento.minimax < raiz.izquierdo.elemento.minimax) return 0
+        if(raiz.izquierdo.elemento.minimax > raiz.izquierdo.elemento.minimax) return 1
+        else{
+            return kotlin.random.Random.nextInt(0 .. 1000) % 2
+        }
+    }
+
     override fun iterator(): MutableIterator<Tablero> {
-        TODO("Not yet implemented")
+        throw  UnsupportedOperationException()
     }
 
     override fun delete(elemento: Tablero?): Boolean {
-        TODO("Not yet implemented")
+        throw  UnsupportedOperationException()
     }
 
     override fun add(elemento: Tablero?) {
-        TODO("Not yet implemented")
+        throw UnsupportedOperationException()
     }
 
 

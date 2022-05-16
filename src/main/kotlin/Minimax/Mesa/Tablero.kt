@@ -2,8 +2,11 @@ package Minimax.Mesa
 
 import Estructuras.Lista
 import Minimax.Actores.Actor
+import Minimax.Actores.CambiaModo
+import Minimax.Actores.Computadora
 import Minimax.Actores.Jugador
 import Minimax.Minimax
+import kotlin.system.exitProcess
 
 /**
  * El tablero de juego.
@@ -14,7 +17,7 @@ import Minimax.Minimax
  * @property nodosJugador Los nodos pertenecientes a [jugador1] en ese instante.
  * @constructor Se crean todas las vecindades y asignamos los nodos de los [Actor] en el juego.
  */
-class Tablero(private val fichas: Array<Ficha>, private val jugador1: Jugador, private val jugador2 : Actor, private var mode  :ModoJuego, primero : Actor) {
+class Tablero(private val fichas: Array<Ficha>, private val jugador1: Jugador, private val computadora : Computadora, private var mode  :ModoJuego, primero : Actor) {
 
     private var nodosTablero: Array<Nodo> = Array(5) { i -> Nodo(i, null) }
     private var nodosJugador: Lista<Nodo> = Lista<Nodo>()
@@ -23,12 +26,15 @@ class Tablero(private val fichas: Array<Ficha>, private val jugador1: Jugador, p
     private var siguienteJugador: Actor = primero
     var minimax : Int = 0
     var invalido : Boolean = false
-    var ultimoMovimieno : Int = 0
+    private var arbolMinimax : Minimax? = null
 
 
-     fun estableceOrden(): Actor {
+    /**
+     * Establece el orden en el tablero.
+     */
+     fun estableceOrden() {
         println("Decidamos quien sera el primer jugador")
-        println("¿Quien sera el primer jugador 1.$jugador1 o 2.$jugador2?")
+        println("¿Quien sera el primer jugador 1.$jugador1 o 2.$computadora?")
         var i = 0
         var porDecidir  = true
         while(porDecidir) {
@@ -41,8 +47,8 @@ class Tablero(private val fichas: Array<Ficha>, private val jugador1: Jugador, p
                 println("Ingresa un numero valido")
             }
         }
-        return if(i == 1) jugador1
-        else jugador2
+         siguienteJugador = if(i == 1) jugador1
+         else computadora
     }
 
     init {
@@ -78,27 +84,69 @@ class Tablero(private val fichas: Array<Ficha>, private val jugador1: Jugador, p
         nodosJugador = jugador1.nodosJugador
 
         //Ponemos los nodos del jugador2
-        jugador2.nodosJugador.agregaFinal(nodosTablero[1])
-        jugador2.nodosJugador.agregaFinal(nodosTablero[3])
-        nodosComputa = jugador2.nodosJugador
-
+        computadora.nodosJugador.agregaFinal(nodosTablero[3])
+        computadora.nodosJugador.agregaFinal(nodosTablero[1])
+        nodosComputa = computadora.nodosJugador
     }
 
     fun mueveSiguiente(){
-        mueveActor(siguienteJugador)
-        siguienteJugador = when(siguienteJugador){
-            jugador1 -> jugador2
-            jugador2 -> jugador1
-            else -> throw RuntimeException()
+        if(mode == ModoJuego.MINIMAX) mueveSiguienteMinimax()
+        else {
+            try{
+                mueveActor(siguienteJugador)
+                siguienteJugador = when(siguienteJugador){
+                    jugador1 ->computadora
+                    computadora -> jugador1
+                    else -> throw RuntimeException()
+                }
+            } catch (ne : CambiaModo){
+                  mode = when(mode){
+                      ModoJuego.MINIMAX -> ModoJuego.RANDOM
+                      ModoJuego.RANDOM -> ModoJuego.MINIMAX
+                  }
+                println("Modo de juego Cambiado")
+            }
+        }
+    }
+
+
+    private fun mueveSiguienteMinimax(){
+        arbolMinimax = Minimax(this)
+        if(siguienteJugador == computadora){
+            println("CPU: Decidiendo jugada optima.")
+            computadora.piensa()
+            val optima = arbolMinimax?.darOptimoComputadora()
+            if (optima != null) {
+                val x = computadora.mueveMinimax(optima)
+                if(!x){
+                    computadora.mueve()
+                }
+                siguienteJugador = jugador1
+            } else{
+                println("Algo salio mal =(")
+                exitProcess(0)
+            }
+        }
+        else{
+            try {
+                mueveActor(siguienteJugador)
+                siguienteJugador = computadora
+            } catch (cm : CambiaModo){
+                mode = when(mode){
+                    ModoJuego.MINIMAX -> ModoJuego.RANDOM
+                    ModoJuego.RANDOM -> ModoJuego.MINIMAX
+                }
+                println("Modo de juego cambiado. Vuelve a mover")
+            }
+
         }
     }
 
     private fun mueveSiguienteEspecifico(i  :Int) : Boolean{
         return if(siguienteJugador.mueveEspecifico(i)){
-            ultimoMovimieno = i
             siguienteJugador= when(siguienteJugador){
-                jugador1 -> jugador2
-                jugador2 -> jugador1
+                jugador1 -> computadora
+                computadora -> jugador1
                 else -> throw RuntimeException()
             }
             true
@@ -113,7 +161,7 @@ class Tablero(private val fichas: Array<Ficha>, private val jugador1: Jugador, p
      * @throws IllegalArgumentException Si el parameter no es un [actor] en el tablero
      */
     private fun mueveActor(actor : Actor){
-        if(actor != jugador1 && actor != jugador2) throw IllegalArgumentException("Tu no estas jugando -_-")
+        if(actor != jugador1 && actor != computadora) throw IllegalArgumentException("Tu no estas jugando -_-")
         actor.mueve()
     }
 
@@ -125,10 +173,11 @@ class Tablero(private val fichas: Array<Ficha>, private val jugador1: Jugador, p
         if(!sePudoMoverDer && !sePudoMoverIzq){
             when(siguienteJugador){
                 //Jugador 1 Pierde
-                jugador1 -> minimax = -1
-                //Jugador 2 Pierde
-                jugador2 -> minimax = 1
+                jugador1 -> minimax = Int.MIN_VALUE
+                // Pierde computadora
+                computadora -> minimax = Int.MAX_VALUE
             }
+            println("Minimax asignado")
             return null
         }
         if(sePudoMoverDer && sePudoMoverIzq)
@@ -145,21 +194,20 @@ class Tablero(private val fichas: Array<Ficha>, private val jugador1: Jugador, p
 
     fun minimaxMayorMenor() : Int{
         return when(siguienteJugador){
-            jugador1 -> 1
-            jugador2 -> -1
-            else -> 0
+            jugador1 -> 1                   //Queremos el maximo valor ya que el siguiente en jugar es el jugador
+            computadora -> -1               //Queremos el minimo valor ya que el siguiente en jugar es la computadora
+            else -> throw RuntimeException()
         }
     }
 
 
     fun clone() : Tablero{
-        if(siguienteJugador == jugador1){
+        return if(siguienteJugador == jugador1){
             val clon1 = jugador1.clone()
-            return Tablero(fichas, clon1, jugador2.clone(), mode ,clon1)
-        }
-        else{
-            val clon2 = jugador2.clone()
-            return Tablero(fichas, jugador1.clone(), clon2,mode , clon2)
+            Tablero(fichas, clon1, computadora.clone(), mode ,clon1)
+        } else{
+            val clon2 = computadora.clone()
+            Tablero(fichas, jugador1.clone(), clon2, mode , clon2)
         }
     }
 

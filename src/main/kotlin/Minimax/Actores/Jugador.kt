@@ -18,33 +18,37 @@ class Jugador(private val nombre:String, override var nodosJugador: Lista<Nodo>,
      * Mueve el jugador su ficha, o en su defecto mueve automáticamente si solo queda una opción o
      * termina el juego si este pierde.
      */
-    override fun mueve(){
+    override fun mueve() : Int{
 
         var puedesMover = true
         if(nodosJugador.get(0).atrapado() && nodosJugador.get(1).atrapado()) puedesMover = false
         else if(nodosJugador.get(1).atrapado()){
             println("Solo puedes mover ${nodosJugador.get(0).valor}")
-            println("Presiona enter para continuar o cualquier tecla para salir")
-            if(readLine() != "") exitProcess(1)
+            println("Presiona enter para continuar, x para cambiar de modo o cualquier tecla para salir")
+            val bb = readln()
+            if(bb == "x") throw CambiaModo()
+            if(bb != "") exitProcess(1)
             val movido = nodosJugador.get(0).mueveFicha()
             nodosJugador.eliminaPrimero()
             nodosJugador.agregaInicio(movido)
             Thread.sleep(400)
             println("$this: Moviendo ficha ${movido.valor} automáticamente")
             ultimoMovimiento = 0
-            return
+            return 0
         }
         else if(nodosJugador.get(0).atrapado()){
             println("Solo puedes mover ${nodosJugador.get(1).valor?.id}")
-            println("Presiona enter para continuar o cualquier tecla para salir")
-            if(readLine() != "") exitProcess(1)
+            println("Presiona enter para continuar, x para cambiar de modo o cualquier tecla para salir")
+            val bb = readln()
+            if(bb == "x") throw CambiaModo()
+            if(bb != "") exitProcess(1)
             val movido = nodosJugador.get(1).mueveFicha()
             nodosJugador.eliminaUltimo()
             nodosJugador.agregaFinal(movido)
             Thread.sleep(400)
             println("$this:  ficha ${movido.valor?.id} automáticamente")
             ultimoMovimiento = 1
-            return
+            return 1
         }
 
         if(!puedesMover){
@@ -55,22 +59,25 @@ class Jugador(private val nombre:String, override var nodosJugador: Lista<Nodo>,
 
         println("¿Que ficha quieres mover, $this? [${nodosJugador.primero.valor?.id}|${nodosJugador.ultimo.valor?.id}]")
         var porMover = true
-        var i= 0
+        var i : String
+        var x = 0
         while (porMover) {
             try {
-                i = readln().toInt()
+                i = readln()
+                if(i == "x") throw CambiaModo()
+                x = i.toInt()
             } catch (nfe: NumberFormatException) {
                 println("Ingresa un numero")
                 continue
             }
-            if (i != nodosJugador.get(0).valor?.id && i != nodosJugador.get(1).valor?.id ) {
+            if (x != 1 && x != 2 ) {
                 println("Escoge una ficha valida [${nodosJugador.primero.valor?.id}|${nodosJugador.ultimo.valor?.id}]")
                 continue
             }
             porMover = false
         }
         val movido : Nodo
-        if(i == nodosJugador.primero.valor?.id){
+        if(x - 1 == 0){
             movido = nodosJugador.primero.mueveFicha()
             nodosJugador.eliminaPrimero()
             nodosJugador.agregaInicio(movido)
@@ -84,8 +91,8 @@ class Jugador(private val nombre:String, override var nodosJugador: Lista<Nodo>,
             Thread.sleep(400)
             println("$this: Minimax.Mesa.Ficha ${movido.valor} movida")
         }
-        ultimoMovimiento = i
-
+        ultimoMovimiento = x
+        return  x - 1
     }
 
     override fun clone(): Jugador {
@@ -93,12 +100,21 @@ class Jugador(private val nombre:String, override var nodosJugador: Lista<Nodo>,
     }
 
     override fun mueveEspecifico(i: Int): Boolean {
-        return if(nodosJugador.get(i).atrapado()){
-            false
-        } else {
-            nodosJugador.get(i).mueveFicha()
-            true
+        if (nodosJugador.get(0).atrapado() && nodosJugador.get(1).atrapado()) return false
+        else if (i == 0) {
+            if (nodosJugador.get(0).atrapado()) return false
+            val movido = nodosJugador.get(0).mueveFicha()
+            nodosJugador.eliminaPrimero()
+            nodosJugador.agregaInicio(movido)
+            return true
+        } else if (i == 1) {
+            if (nodosJugador.get(1).atrapado()) return false
+            val movido = nodosJugador.get(1).mueveFicha()
+            nodosJugador.eliminaUltimo()
+            nodosJugador.agregaFinal(movido)
+            return true
         }
+        return false
     }
 
 

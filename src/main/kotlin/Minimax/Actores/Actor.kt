@@ -17,7 +17,7 @@ interface Actor {
     /**
      * Mueve el actor sus fichas
      */
-    fun mueve()
+    fun mueve() : Int
 
     fun mueveEspecifico(i : Int) : Boolean
 

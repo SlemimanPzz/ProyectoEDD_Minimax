@@ -14,40 +14,66 @@ import kotlin.system.exitProcess
  * @property oponente Oponente de la computadora.
  * @property mode Modo de juego definido en [ModoJuego] en el que la computadora actuara.
  */
-class Computadora(override var nodosJugador: Lista<Nodo>, override var oponente: Actor?, private val mode : ModoJuego) :
+class Computadora(override var nodosJugador: Lista<Nodo>, override var oponente: Actor?) :
     Actor {
 
-    /**
-     * Mueve dependiendo del modo de juego que esté la computadora.
-     */
-    override fun mueve() {
-       when(mode){
-           ModoJuego.RANDOM -> mueveRandom()
-           ModoJuego.MINIMAX -> mueveMinimax()
-       }
-    }
 
     override fun mueveEspecifico(i: Int): Boolean {
-        return if(nodosJugador.get(i).atrapado()){
-            false
-        } else {
-            nodosJugador.get(i).mueveFicha()
-            true
+        if (nodosJugador.get(0).atrapado() && nodosJugador.get(1).atrapado()) return false
+        else if (i == 0) {
+            if (nodosJugador.get(0).atrapado()) return false
+            val movido = nodosJugador.get(0).mueveFicha()
+            nodosJugador.eliminaPrimero()
+            nodosJugador.agregaInicio(movido)
+            return true
+        } else if (i == 1) {
+            if (nodosJugador.get(1).atrapado()) return false
+            val movido = nodosJugador.get(1).mueveFicha()
+            nodosJugador.eliminaUltimo()
+            nodosJugador.agregaFinal(movido)
+            return true
         }
+        return false
     }
+
+    fun mueveMinimax(i :Int) : Boolean {
+        if (nodosJugador.get(0).atrapado() && nodosJugador.get(1).atrapado()){
+            println("Feliciades $oponente")
+            Thread.sleep(1000)
+            println("Ganaeste")
+            Thread.sleep(1000)
+            println("¿Como?")
+            Thread.sleep(1000)
+            println("(¬､¬)")
+        }
+
+
+        else if (i == 0) {
+            if (nodosJugador.get(0).atrapado()) return false
+            val movido = nodosJugador.get(0).mueveFicha()
+            nodosJugador.eliminaPrimero()
+            nodosJugador.agregaInicio(movido)
+            println("$this: Se movio ${movido.valor}")
+            return true
+        } else if (i == 1) {
+            if (nodosJugador.get(1).atrapado()) return false
+            val movido = nodosJugador.get(1).mueveFicha()
+            nodosJugador.eliminaUltimo()
+            nodosJugador.agregaFinal(movido)
+            println("$this: Se movio ${movido.valor}")
+            return true
+        }
+        return false
+    }
+
+
 
     override fun clone(): Computadora {
-        return Computadora(Lista<Nodo>(), null, mode)
+        return Computadora(Lista<Nodo>(), null )
     }
 
-    /**
-     * Movimiento utilizando Minimax
-     */
-    private fun mueveMinimax() {
-        TODO("Not yet implemented")
-    }
 
-    private fun piensa(){
+    fun piensa(){
         print("CPU: Pensando")
         for (x in 1 .. 3){
             Thread.sleep(700)
@@ -60,7 +86,7 @@ class Computadora(override var nodosJugador: Lista<Nodo>, override var oponente:
     /**
      * Movimiento aleatorio
      */
-    private fun mueveRandom() {
+    override fun mueve() : Int{
         var puedesMover = true
         if(nodosJugador.get(0).atrapado() && nodosJugador.get(1).atrapado()) puedesMover = false
         else if(nodosJugador.get(1).atrapado()){
@@ -69,7 +95,7 @@ class Computadora(override var nodosJugador: Lista<Nodo>, override var oponente:
             nodosJugador.agregaInicio(movido)
             piensa()
             println("$this: Moviendo ficha ${movido.valor} automáticamente, unica opción posible")
-            return
+            return 0
         }
         else if(nodosJugador.get(0).atrapado()){
             val movido = nodosJugador.get(1).mueveFicha()
@@ -77,7 +103,7 @@ class Computadora(override var nodosJugador: Lista<Nodo>, override var oponente:
             nodosJugador.agregaFinal(movido)
             piensa()
             println("$this:  ficha ${movido.valor} automáticamente, unica opción posible")
-            return
+            return 1
         }
 
 
@@ -103,6 +129,7 @@ class Computadora(override var nodosJugador: Lista<Nodo>, override var oponente:
             nodosJugador.agregaFinal(movido)
             println("CPU: Se he movido aleatoriamente la ficha ${movido.valor}")
         }
+        return  i
     }
 
     override fun toString(): String {

@@ -19,13 +19,11 @@ fun main() {
     println("Tu nombre sera $s.")
 
     val humano  = Jugador(s, Lista<Nodo>(), null)
-    val comp = Computadora(Lista<Nodo>(), humano, ModoJuego.MINIMAX)
+    val comp = Computadora(Lista<Nodo>(), humano,)
     humano.oponente = comp
     val fichas = arrayOf(Ficha(1, humano), Ficha(2, humano), Ficha(3, comp), Ficha(4, comp))
     val tablero = Tablero(fichas, humano, comp, ModoJuego.MINIMAX, humano)
     tablero.estableceOrden()
-
-    val arbolMinimax = Minimax(tablero)
 
     println(tablero)
 
