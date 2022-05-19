@@ -1,11 +1,12 @@
 import Estructuras.Lista
-import minimax.Actores.Computadora
-import minimax.Actores.Jugador
+import minimax.actores.Computadora
+import minimax.actores.Jugador
 import minimax.mesa.Ficha
 import minimax.mesa.ModoJuego
 import minimax.mesa.Nodo
 import minimax.mesa.Tablero
-import  kotlin.io.readln
+import kotlin.io.readln
+
 
 fun main() {
     println("Bienvenido al Juego.")

@@ -1,4 +1,4 @@
-package minimax.Actores
+package minimax.actores
 
 import Estructuras.Lista
 import minimax.mesa.Nodo

@@ -1,10 +1,10 @@
 package minimax.mesa
 
 import Estructuras.Lista
-import minimax.Actores.Actor
-import minimax.Actores.CambiaModo
-import minimax.Actores.Computadora
-import minimax.Actores.Jugador
+import minimax.actores.Actor
+import minimax.actores.CambiaModo
+import minimax.actores.Computadora
+import minimax.actores.Jugador
 import minimax.Minimax
 import kotlin.system.exitProcess
 
@@ -284,7 +284,7 @@ class Tablero(private val fichas: Array<Ficha>, private val jugador1: Jugador, p
      * @return El talero en [String]
      */
     override fun toString(): String {
-        return """
+        return """MODO: $mode
             ${nodosTablero[0]}---${nodosTablero[1]}
               |    \ /    |
               |  ${nodosTablero[2]}  |

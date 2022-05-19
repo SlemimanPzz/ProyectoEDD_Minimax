@@ -1,4 +1,4 @@
-package minimax.Actores
+package minimax.actores
 
 /**
  * Clase que se encarga de cambiar el modo de la computadora.

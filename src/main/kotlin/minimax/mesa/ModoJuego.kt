@@ -20,7 +20,7 @@ enum class ModoJuego {
      */
     override fun toString(): String {
         return when(this){
-            MINIMAX -> "minimax"
+            MINIMAX -> "Minimax"
             RANDOM -> "Random"
         }
     }
