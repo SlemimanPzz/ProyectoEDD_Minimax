@@ -1,6 +1,6 @@
 package minimax.mesa
 
-import minimax.actores.Actor
+import minimax.Actores.Actor
 
 /**
  * Fichas dentro del juego, con su [id] y [propietario].

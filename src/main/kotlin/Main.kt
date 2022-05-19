@@ -1,6 +1,6 @@
 import Estructuras.Lista
-import minimax.actores.Computadora
-import minimax.actores.Jugador
+import minimax.Actores.Computadora
+import minimax.Actores.Jugador
 import minimax.mesa.Ficha
 import minimax.mesa.ModoJuego
 import minimax.mesa.Nodo
@@ -44,6 +44,7 @@ fun main() {
     val fichas = arrayOf(Ficha(1, humano), Ficha(2, humano), Ficha(3, comp), Ficha(4, comp))
     val tablero = Tablero(fichas, humano, comp, mode, humano)
     tablero.estableceOrden()
+    tablero.posicionamientoInicial()
 
     println(tablero)
 

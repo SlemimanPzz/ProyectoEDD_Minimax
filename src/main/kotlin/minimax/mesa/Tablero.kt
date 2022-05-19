@@ -1,10 +1,10 @@
 package minimax.mesa
 
 import Estructuras.Lista
-import minimax.actores.Actor
-import minimax.actores.CambiaModo
-import minimax.actores.Computadora
-import minimax.actores.Jugador
+import minimax.Actores.Actor
+import minimax.Actores.CambiaModo
+import minimax.Actores.Computadora
+import minimax.Actores.Jugador
 import minimax.Minimax
 import kotlin.system.exitProcess
 
@@ -78,22 +78,6 @@ class Tablero(private val fichas: Array<Ficha>, private val jugador1: Jugador, p
         nodosTablero[4].vecindad.add(nodosTablero[1])
         nodosTablero[4].vecindad.add(nodosTablero[2])
 
-
-        //Colocamos las fichas
-        nodosTablero[0].valor = fichas[0]
-        nodosTablero[1].valor = fichas[3]
-        nodosTablero[3].valor = fichas[2]
-        nodosTablero[4].valor = fichas[1]
-
-        //Ponemos los nodos del jugador1
-        jugador1.nodosJugador.agregaFinal(nodosTablero[0])
-        jugador1.nodosJugador.agregaFinal(nodosTablero[4])
-        nodosJugador = jugador1.nodosJugador
-
-        //Ponemos los nodos del jugador2
-        computadora.nodosJugador.agregaFinal(nodosTablero[3])
-        computadora.nodosJugador.agregaFinal(nodosTablero[1])
-        nodosComputa = computadora.nodosJugador
     }
 
     /**
@@ -159,7 +143,7 @@ class Tablero(private val fichas: Array<Ficha>, private val jugador1: Jugador, p
      *
      *@return Lo mismo que [Actor.mueveEspecifico]
      */
-    fun mueveSiguienteEspecifico(i  :Int) : Boolean{
+    private fun mueveSiguienteEspecifico(i  :Int) : Boolean{
         return if(siguienteJugador.mueveEspecifico(i)){
             siguienteJugador= when(siguienteJugador){
                 jugador1 -> computadora
@@ -169,6 +153,88 @@ class Tablero(private val fichas: Array<Ficha>, private val jugador1: Jugador, p
             true
         } else false
     }
+
+
+
+    fun posicionamientoInicial(){
+        println("¿Como desea colocar las fichas? [1.Defualt | 2. Perzonalizado]")
+        while(true){
+            try {
+                val i  = readln().toInt()
+                if( i !in 1 ..2){
+                    println("Ingresa un numero valido. [1.Defualt | 2. Perzonalizado]")
+                    continue
+
+                } else if(i == 1){
+                    posicionDefault()
+                    println("Fichas colocadas")
+                    break
+
+                } else {
+                    println(i)
+                    posicionPerzo()
+                    println("Fichas Colocadas\n $this")
+                    break
+
+                }
+
+            } catch (nfe : NumberFormatException){
+                println("Ingresa un numero valido")
+            }
+        }
+    }
+
+
+    private fun posicionDefault(){
+
+        //Colocamos las fichas
+        nodosTablero[0].valor = fichas[0]
+        nodosTablero[1].valor = fichas[3]
+        nodosTablero[3].valor = fichas[2]
+        nodosTablero[4].valor = fichas[1]
+
+        //Ponemos los nodos del jugador1
+        jugador1.nodosJugador.agregaFinal(nodosTablero[0])
+        jugador1.nodosJugador.agregaFinal(nodosTablero[4])
+        nodosJugador = jugador1.nodosJugador
+
+        //Ponemos los nodos del jugador2
+        computadora.nodosJugador.agregaFinal(nodosTablero[3])
+        computadora.nodosJugador.agregaFinal(nodosTablero[1])
+        nodosComputa = computadora.nodosJugador
+    }
+
+    private  fun posicionPerzo(){
+        fichas.forEach {
+            println("¿Donde deseas colocar $it? [0 - 4]")
+            println("$this")
+            while(true){
+                try {
+                    val i = readln().toInt()
+                    if(i !in 0 .. 4){
+                        println("Ingresa un lugar valido. Vuelve a ingresar")
+                        continue
+                    }
+                    if(nodosTablero[i].valor == null){
+                        nodosTablero[i].valor = it
+                        if(it.id in 1 ..2) jugador1.nodosJugador.agregaFinal(nodosTablero[i])
+                        else computadora.nodosJugador.agregaFinal(nodosTablero[i])
+                        break
+                    } else {
+                        println("Poscion Invalida, ya ocupada. Vuelve a ingresar")
+                        continue
+                    }
+                } catch ( nfe : NumberFormatException) {
+                    println("Ingresa un numero valido. Vuelve a ingresar")
+                    continue
+                }
+            }
+        }
+    }
+
+
+
+
 
     /**
      * Hace que el [actor] haga un movimiento
