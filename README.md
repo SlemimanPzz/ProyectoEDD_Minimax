@@ -2,7 +2,8 @@
 
 ---
 ## Ricardo Emiliano Apodaca Cardiel <span style="font-family:monospace">422029455
-
+## Laura Itzel Rodríguez Dimayuga <span style="font-family:monospace">422013628
+## Anshar Shamash Aaron Domínguez Barrón <span style="font-family:monospace">420138170
 ---
 
 Este proyecto fue hecho en Java y [Kotlin](https://kotlinlang.org/ "Kotlin" ) con
@@ -51,7 +52,8 @@ que desee que la máquina tome decisiones, minimax o random. Una vez esto ya ini
 Se puede cambiar el modo de juego en cualquier momento presionando `x`, o en un enter 
 o cualquier otra tecla para salir.
 
-
+Si el jugar solo tiene una ficha para mover solo tiene que teclear enter, 
+si el jugador puede mover sus dos fichas puedes escoger cual de las dos mover.
 ---
 Otra manera sin instalar Gradle es utilizando [gradlew](gradlew) y [gradlew.bat](gradlew.bat)
 ya incluidos en el proyecto, únicamente sustituya `gradle` por `./gradlew` o
