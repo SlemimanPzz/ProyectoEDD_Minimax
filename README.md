@@ -1,9 +1,9 @@
 # Proyecto 2 | Estructura de Datos | minimax
 
 ---
-## Ricardo Emiliano Apodaca Cardiel <span style="font-family:monospace">422029455
-## Laura Itzel Rodríguez Dimayuga <span style="font-family:monospace">422013628
-## Anshar Shamash Aaron Domínguez Barrón <span style="font-family:monospace">420138170
+## Ricardo Emiliano Apodaca Cardiel <span style="font-family:monospace">
+## Laura Itzel Rodríguez Dimayuga <span style="font-family:monospace">
+## Anshar Shamash Aaron Domínguez Barrón <span style="font-family:monospace">
 ---
 
 Este proyecto fue hecho en Java y [Kotlin](https://kotlinlang.org/ "Kotlin" ) con
